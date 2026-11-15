@@ -4,7 +4,7 @@ A math practice game for kids on Android: addition, subtraction and multiplicati
 
 ## Download
 
-Get the **MathStars APK** from the [latest release](../../releases/latest), open it on an Android phone or tablet (Android 8.0 or newer) and tap Install. Android asks once to allow installing apps from that source; if Play Protect warns that the app isn't from the Play Store, tap *Install anyway*.
+**[Download MathStars.apk](https://github.com/essiarab/math-stars/releases/latest/download/MathStars.apk)** (this link always gets the newest version), open it on an Android phone or tablet (Android 8.0 or newer) and tap Install. Android asks once to allow installing apps from that source; if Play Protect warns that the app isn't from the Play Store, tap *Install anyway*.
 
 ## How it plays
 
