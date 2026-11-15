@@ -2,6 +2,10 @@
 
 A math practice game for kids on Android: addition, subtraction and multiplication for school grades 1 to 6.
 
+## Download
+
+Get **MathStars-1.0.apk** from the [latest release](../../releases/latest), open it on an Android phone or tablet (Android 8.0 or newer) and tap Install. Android asks once to allow installing apps from that source; if Play Protect warns that the app isn't from the Play Store, tap *Install anyway*.
+
 ## How it plays
 
 - **Who's playing?** Each child has their own player (a name, an animal and a grade) with their own stars, best scores and settings. Press and hold a player to change or delete them.
