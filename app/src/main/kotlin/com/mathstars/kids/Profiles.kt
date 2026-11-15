@@ -81,7 +81,7 @@ class ProfilesActivity : Activity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val scroll = ScrollView(this).apply { isFillViewport = true; clipToPadding = false }
+        val scroll = ScrollView(this).apply { isFillViewport = true }
         val frame = FrameLayout(this)
         column = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL

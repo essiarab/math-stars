@@ -42,15 +42,51 @@ data class Question(val a: Int, val b: Int, val op: Operation, val answer: Int) 
     }
 }
 
+/** Times tables the children can learn and practice. */
+object Tables {
+    val ALL = 1..12
+
+    /** Each practice round asks table × 1 to table × 10, once each. */
+    val MULTIPLIERS = 1..10
+
+    fun tip(n: Int): String = when (n) {
+        1 -> "Any number times 1 stays the same."
+        2 -> "Times 2 is doubling: add the number to itself."
+        3 -> "Count by threes: 3, 6, 9, 12, 15…"
+        4 -> "Double the number, then double it again."
+        5 -> "The answers always end in 0 or 5."
+        6 -> "6 times an even number ends with that number: 6 × 4 = 24."
+        9 -> "The digits of each answer add up to 9: 18, 27, 36…"
+        10 -> "Just put a 0 at the end of the number!"
+        11 -> "Up to 9, write the number twice: 4 × 11 = 44."
+        12 -> "Times 10, then add times 2: 12 × 3 = 30 + 6 = 36."
+        else -> "Count by ${n}s: " + (1..5).joinToString(", ") { (it * n).toString() } + "…"
+    }
+}
+
 class QuestionGenerator(
     private val grade: Grade,
     private val op: Operation,
     private val random: Random = Random.Default,
+    /** Practice one times table instead of the grade's questions. */
+    private val table: Int? = null,
 ) {
     private var last: Question? = null
+    private val deck = ArrayDeque<Int>()
 
     /** A new question, never the same as the one before. */
     fun next(): Question {
+        if (table != null) {
+            // Every multiplier once, in a random order, then again
+            if (deck.isEmpty()) {
+                val order = Tables.MULTIPLIERS.shuffled(random).toMutableList()
+                // No repeat across the reshuffle either
+                if (order.size > 1 && order.first() == last?.b) order.add(order.removeAt(0))
+                deck.addAll(order)
+            }
+            val b = deck.removeFirst()
+            return Question(table, b, Operation.MULTIPLY, table * b).also { last = it }
+        }
         var q = make()
         var tries = 0
         while (q == last && tries++ < 20) q = make()
@@ -170,10 +206,12 @@ class GameSession(
     val totalQuestions: Int = 10,
     val maxLives: Int = 3,
     random: Random = Random.Default,
+    /** Practicing one times table (see Tables), or null. */
+    val table: Int? = null,
 ) {
     data class Outcome(val correct: Boolean, val points: Int, val question: Question)
 
-    private val generator = QuestionGenerator(grade, op, random)
+    private val generator = QuestionGenerator(grade, op, random, table)
 
     var current: Question = generator.next(); private set
     var lives = maxLives; private set

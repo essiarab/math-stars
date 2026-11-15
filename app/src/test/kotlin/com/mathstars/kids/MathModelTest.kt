@@ -76,6 +76,29 @@ class MathModelTest {
     }
 
     @Test
+    fun timesTableRoundAsksEachMultiplierOnce() {
+        for (t in Tables.ALL) {
+            val s = GameSession(Grade.G3, Operation.MULTIPLY, random = Random(t), table = t)
+            val asked = mutableListOf<Int>()
+            while (!s.isOver) {
+                val q = s.current
+                assertEquals(t, q.a)
+                assertEquals(t * q.b, q.answer)
+                asked += q.b
+                s.submit(q.answer, 5)
+                if (!s.isOver) s.nextQuestion()
+            }
+            assertEquals(Tables.MULTIPLIERS.toList(), asked.sorted())
+        }
+    }
+
+    @Test
+    fun timesTableNeverRepeatsBackToBack() {
+        val gen = QuestionGenerator(Grade.G3, Operation.MULTIPLY, Random(5), table = 7)
+        List(200) { gen.next() }.zipWithNext().forEach { (x, y) -> assertFalse("$x", x == y) }
+    }
+
+    @Test
     fun formatting() {
         assertEquals("7 + 5", Question(7, 5, Operation.ADD, 12).text)
         assertEquals("−3 × (−4)", Question(-3, -4, Operation.MULTIPLY, 12).text)

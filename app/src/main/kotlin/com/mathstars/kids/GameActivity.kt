@@ -27,6 +27,8 @@ class GameActivity : Activity() {
         const val EXTRA_GRADE = "grade"
         const val EXTRA_OP = "op"
         const val EXTRA_TYPING = "typing"
+        /** Practice one times table (1-12); absent for the grade games. */
+        const val EXTRA_TABLE = "table"
         private const val MAX_DIGITS = 7
         private val CHOICE_COLORS = intArrayOf(0xFFF03E3E.toInt(), 0xFF1C7ED6.toInt(), 0xFF37B24D.toInt(), 0xFFE8A200.toInt())
         private val PRAISE = listOf("Great job!", "Awesome!", "You got it!", "Super!", "Brilliant!", "Fantastic!", "Well done!")
@@ -82,7 +84,8 @@ class GameActivity : Activity() {
         val grade = Grade.valueOf(intent.getStringExtra(EXTRA_GRADE) ?: Grade.G1.name)
         val op = Operation.valueOf(intent.getStringExtra(EXTRA_OP) ?: Operation.ADD.name)
         typing = intent.getBooleanExtra(EXTRA_TYPING, false)
-        session = GameSession(grade, op)
+        val table = intent.getIntExtra(EXTRA_TABLE, 0).takeIf { it in Tables.ALL }
+        session = GameSession(grade, op, table = table)
         sounds = Sounds()
 
         buildUi()
@@ -427,12 +430,15 @@ class GameActivity : Activity() {
     }
 
     private fun finishRound() {
-        val newBest = Progress.current(this).record(session.grade, session.op, session.score, session.stars)
+        val progress = Progress.current(this)
+        val newBest = session.table?.let { progress.recordTable(it, session.score, session.stars) }
+            ?: progress.record(session.grade, session.op, session.score, session.stars)
         startActivity(
             Intent(this, ResultActivity::class.java)
                 .putExtra(EXTRA_GRADE, session.grade.name)
                 .putExtra(EXTRA_OP, session.op.name)
                 .putExtra(EXTRA_TYPING, typing)
+                .putExtra(EXTRA_TABLE, session.table ?: 0)
                 .putExtra(ResultActivity.EXTRA_SCORE, session.score)
                 .putExtra(ResultActivity.EXTRA_CORRECT, session.correct)
                 .putExtra(ResultActivity.EXTRA_TOTAL, session.totalQuestions)

@@ -58,6 +58,7 @@ class ResultActivity : Activity() {
     private fun build(animate: Boolean) {
         val grade = Grade.valueOf(intent.getStringExtra(GameActivity.EXTRA_GRADE) ?: Grade.G1.name)
         val op = Operation.valueOf(intent.getStringExtra(GameActivity.EXTRA_OP) ?: Operation.ADD.name)
+        val table = intent.getIntExtra(GameActivity.EXTRA_TABLE, 0).takeIf { it in Tables.ALL }
         val score = intent.getIntExtra(EXTRA_SCORE, 0)
         val correct = intent.getIntExtra(EXTRA_CORRECT, 0)
         val total = intent.getIntExtra(EXTRA_TOTAL, 10)
@@ -90,7 +91,7 @@ class ResultActivity : Activity() {
             else -> "Keep practicing$name! 💪"
         }
         col.addView(text(title, 34f, 0xFF7048E8.toInt()))
-        val sub = if (outOfLives) "Out of hearts — try again!" else "${grade.title} · ${op.title}"
+        val sub = if (outOfLives) "Out of hearts — try again!" else if (table != null) "The $table times table" else "${grade.title} · ${op.title}"
         col.addView(text(sub, 16f, Ui.MUTED, bold = false).apply { setPadding(0, dp(4), 0, 0) })
 
         // Stars
@@ -124,7 +125,7 @@ class ResultActivity : Activity() {
         if (newBest && score > 0) {
             card.addView(text("🏆 New best score!", 22f, 0xFFF76707.toInt()).apply { setPadding(0, dp(10), 0, 0) })
         } else {
-            card.addView(text("Best: ${Progress.current(this).best(grade, op)}", 16f, Ui.MUTED, bold = false).apply { setPadding(0, dp(8), 0, 0) })
+            card.addView(text("Best: ${Progress.current(this).let { p -> if (table != null) p.tableBest(table) else p.best(grade, op) }}", 16f, Ui.MUTED, bold = false).apply { setPadding(0, dp(8), 0, 0) })
         }
         col.addView(card, LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT).apply {
             topMargin = dp(8)

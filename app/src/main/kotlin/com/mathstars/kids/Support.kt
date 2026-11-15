@@ -37,7 +37,24 @@ class Progress(context: Context, profileId: Int) {
     fun best(grade: Grade, op: Operation) = prefs.getInt("best_${grade.name}_${op.name}", 0)
 
     fun gradeStars(grade: Grade) = Operation.entries.sumOf { stars(grade, it) }
-    fun totalStars() = Grade.entries.sumOf { gradeStars(it) }
+    fun totalStars() = Grade.entries.sumOf { gradeStars(it) } + Tables.ALL.sumOf { tableStars(it) }
+
+    // Times tables
+    fun tableStars(table: Int) = prefs.getInt("stars_table_$table", 0)
+    fun tableBest(table: Int) = prefs.getInt("best_table_$table", 0)
+    var tablesTyping: Boolean
+        get() = prefs.getBoolean("typing_tables", false)
+        set(value) = prefs.edit().putBoolean("typing_tables", value).apply()
+
+    /** Saves a times-table round; true when it is a new best score. */
+    fun recordTable(table: Int, score: Int, stars: Int): Boolean {
+        val newBest = score > tableBest(table)
+        prefs.edit().apply {
+            if (newBest) putInt("best_table_$table", score)
+            if (stars > tableStars(table)) putInt("stars_table_$table", stars)
+        }.apply()
+        return newBest
+    }
 
     /** Saves the round; true when it is a new best score. */
     fun record(grade: Grade, op: Operation, score: Int, stars: Int): Boolean {

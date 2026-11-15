@@ -34,7 +34,6 @@ class MainActivity : Activity() {
 
         val scroll = ScrollView(this).apply {
             isFillViewport = true
-            clipToPadding = false
         }
         val frame = FrameLayout(this)
         column = LinearLayout(this).apply {
@@ -122,6 +121,10 @@ class MainActivity : Activity() {
         // Games
         column.addView(text("3 · Choose a game", 20f, bold = true), lp(24))
         for (op in Operation.entries) column.addView(opButton(op), lp(10).apply { marginStart = dp(5); marginEnd = dp(5) })
+
+        // Learn the times tables
+        column.addView(text("📚 Learn", 20f, bold = true), lp(24))
+        column.addView(tablesButton(), lp(10).apply { marginStart = dp(5); marginEnd = dp(5) })
     }
 
     private fun gradeCard(g: Grade): View {
@@ -186,6 +189,33 @@ class MainActivity : Activity() {
 
         val stars = progress.stars(grade, op)
         row.addView(text("★".repeat(stars) + "☆".repeat(3 - stars), 24f, if (stars > 0) 0xFFFFE066.toInt() else 0x99FFFFFF.toInt(), bold = true))
+        return row
+    }
+
+    private fun tablesButton(): View {
+        val color = 0xFF0CA678.toInt()
+        val row = LinearLayout(this).apply {
+            orientation = LinearLayout.HORIZONTAL
+            gravity = Gravity.CENTER_VERTICAL
+            setPadding(dp(12), dp(12), dp(18), dp(12))
+            Ui.paint(this, color, 24)
+            elevation = dp(4).toFloat()
+            isClickable = true
+            setOnClickListener { startActivity(Intent(this@MainActivity, TablesActivity::class.java)) }
+        }
+        row.addView(text("×", 34f, color, bold = true).apply {
+            gravity = Gravity.CENTER
+            background = Ui.rounded(Color.WHITE, dp(32).toFloat())
+        }, LinearLayout.LayoutParams(dp(64), dp(64)))
+        val labels = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            setPadding(dp(16), 0, dp(8), 0)
+        }
+        labels.addView(text("Times tables", 22f, Color.WHITE, bold = true))
+        labels.addView(text("Learn and practice the 1 to 12 tables", 14f, 0xEEFFFFFF.toInt()))
+        row.addView(labels, LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f))
+        val got = Tables.ALL.sumOf { progress.tableStars(it) }
+        row.addView(text("⭐ $got / ${Tables.ALL.count() * 3}", 18f, Color.WHITE, bold = true))
         return row
     }
 

@@ -4,7 +4,7 @@ A math practice game for kids on Android: addition, subtraction and multiplicati
 
 ## Download
 
-Get **MathStars-1.0.apk** from the [latest release](../../releases/latest), open it on an Android phone or tablet (Android 8.0 or newer) and tap Install. Android asks once to allow installing apps from that source; if Play Protect warns that the app isn't from the Play Store, tap *Install anyway*.
+Get the **MathStars APK** from the [latest release](../../releases/latest), open it on an Android phone or tablet (Android 8.0 or newer) and tap Install. Android asks once to allow installing apps from that source; if Play Protect warns that the app isn't from the Play Store, tap *Install anyway*.
 
 ## How it plays
 
@@ -22,6 +22,7 @@ Get **MathStars-1.0.apk** from the [latest release](../../releases/latest), open
 
 - **Pick how to answer:** tap one of four answers (the default for grades 1 and 2), or type the answer on a number pad (the default from grade 3 on).
 - **Choose a game:** Addition, Subtraction, Multiplication or Mix it up.
+- **Learn the times tables (1 to 12):** each table has a page with the whole table, a tip for remembering it, and a "hide the answers" mode to test yourself. *Practice* asks ×1 to ×10 of that table once each, in a random order, and gives stars for each table.
 - A round is **10 questions** with a timer each and **3 hearts**. A wrong answer or running out of time costs a heart and shows the right answer.
 - **Points:** 10 for each right answer, more for answering fast, and a bonus for 3 or more right in a row.
 - **Stars:** ★★★ for 10 out of 10, ★★ for 8 or more, ★ for 5 or more.
@@ -50,6 +51,7 @@ Plain Android framework views in Kotlin, with no libraries at runtime. Android 8
 - `MathModel.kt`: grades, question generator, answer choices, and the game round (score, hearts, stars). Unit tests in `app/src/test`.
 - `Profiles.kt`: players and the "Who's playing?" screen.
 - `MainActivity.kt`: choose grade, answer mode and game.
+- `TablesActivity.kt`: the times tables grid and each table's learn page.
 - `GameActivity.kt`: the round (timer, answer buttons or number pad).
 - `ResultActivity.kt`: stars, score and confetti.
 - `Support.kt`: each player's saved progress, UI helpers, sounds.
