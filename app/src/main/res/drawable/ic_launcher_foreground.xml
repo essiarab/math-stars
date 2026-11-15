@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- A big gold star -->
+    <path
+        android:fillColor="#FFD43B"
+        android:strokeColor="#F59F00"
+        android:strokeWidth="2"
+        android:strokeLineJoin="round"
+        android:pathData="M54,22 L61.6,43.6 L84.4,44.1 L66.3,58 L72.8,79.9 L54,67 L35.2,79.9 L41.7,58 L23.6,44.1 L46.4,43.6 Z" />
+    <!-- A plus sign in the middle -->
+    <path
+        android:fillColor="#7048E8"
+        android:pathData="M51.5,48.5 h5 v5 h5 v5 h-5 v5 h-5 v-5 h-5 v-5 h5 Z" />
+</vector>
